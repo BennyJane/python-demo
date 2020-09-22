@@ -8,16 +8,16 @@ def _NOTE():
 
 
 '''
-** 在导入时，类对象已经被创建；每次实例化类的时候，调用 __new__() 方法，返回已经生成的类(调用type的__new__生成的)，再调用__init__方法实例化
+** 在导入时，类对象已经被创建（(调用type的__new__(), type的 __init__方法也被调用)）；每次实例化类的时候，调用 __new__() 方法，返回已经生成的类，再调用普通类__init__方法实例化
 ** 在导入时，类对象会查找继承的元类，最终调用type.__new__(), __init__()方法，完成新类的创建；
 ** 类实例化( SomeClass() ), 其实调用的是继承的元类的 __call__() 类方法 
-    ==》 利用该特性实现单例 
+    ==》利用该特性实现单例 
     ==》新的调用顺序： 父类元类的 __call__ --> __new__(自身 or 父类) --> __init__(自身 or 父类)
 ** 普通类实例化的时候，不再调用元类的 __new__等方法； 只会调用自身的 __new__ __init__ 方法
 '''
 
 '''
-__new__ 方法实现:
+__new__ 方法实现: 这里的 __new__ 方法指的是普通类的__new__方法，不是元类
 1. 在调用 __new__ 方法的时候，记录实例化的次数
 2. 只实例化了一个对象；但每次实例化该类，会重新调用 __init__方法，覆盖之前的属性or方法： 允许多次实例化
 '''
@@ -27,7 +27,7 @@ __new__ 方法实现:
 class FirstType:
     # 重写 __new__() 方法的时候， 需要接收cls,*args, **kwargs 三个参数
     # 调用父类的__new__(cls)的时候，只需要传入一个参数
-    def __new__(cls, *args, **kwargs):  # 该方法是一个类方法： cls
+    def __new__(cls, *args, **kwargs):  # 该方法是一个类方法： cls; 必须返回一个实例，才能继续调用 __init__()方法
         print(" __new__ ...")
         # todo 生成该类的不同写法：
         if not hasattr(cls, '_instance'):
@@ -61,19 +61,21 @@ def test1():
 # test1()
 '''
 __new__： 限制实例化次数
+** 真正的实例对象实在 __new__ 方法处创建的，所有必须在 __new__方法处，记录实例次数
 '''
 
 
 class FirstType2:
     __instance = None  # 记录是否已经通过__new__实例化
-    Instance = False  # 记录是否已经通过 __init__ 方法初始化
+    __init = False  # 记录是否已经通过 __init__ 方法初始化
 
     def __init__(self, name):
-        if not self.Instance:
+        if not self.__init:
             self.name = name
-            self.Instance = True
+            self.__init = True
 
     def __new__(cls, *args, **kwargs):
+        # 这里必须写
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
         return cls.__instance
@@ -102,7 +104,9 @@ class Singleton(type):
     #  无关代码，可删除
     def __new__(cls, *args, **kwargs):
         print("Singleton: __new__")
+        # FIXME 元类的__new__() 方法调用可以传入参数 ？？ 而普通类的__new__（） 方法调用不能传入其他参数 -》 这部分代码是在导入时执行的
         return type.__new__(cls, *args, **kwargs)
+        # 不能使用 object.__new__() 方法
         # return super().__new__(cls, *args, **kwargs)
 
     # noinspection PyTypeChecker
@@ -136,7 +140,7 @@ def test3():
     # print(first1._instance)
 
 
-# test3()
+test3()
 
 '''
 使用元类： 
@@ -182,6 +186,7 @@ def test4():
 
 
 # test4()
+
 
 '''
 模块导入
@@ -255,4 +260,4 @@ def test6():
     print(first2.name)
 
 
-test6()
+# test6()

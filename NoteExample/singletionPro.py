@@ -60,6 +60,7 @@ class Mymeta(type):
     # self 就是MySQL这个类
     def __init__(self, class_name, class_bases, class_dic):
         self.__instance = self(IP, PORT)
+        super().__init__(class_name, class_bases, class_dic)
 
     def __call__(self, *args, **kwargs):
         if args or kwargs:
