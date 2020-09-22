@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import logging
+from colorama import Fore
 from logging.handlers import TimedRotatingFileHandler
 
 from .config import logConfig
@@ -48,3 +49,29 @@ def setLogger(name=None):
 
     loggers[name] = logger
     return logger
+
+
+class customLog:
+    def __init__(self, name):
+        self.logger = setLogger(name)
+
+    def info(self, msg):
+        self.logger.info(msg)
+
+    def debug(self, msg):
+        self.logger.debug(
+            Fore.YELLOW + msg + Fore.RESET
+        )
+
+    def error(self, msg):
+        self.logger.error(
+            Fore.RED + msg + Fore.RESET
+        )
+
+    def warning(self, msg):
+        self.logger.warning(
+            Fore.LIGHTYELLOW_EX + msg + Fore.RESET
+        )
+
+
+logger = customLog("custom")

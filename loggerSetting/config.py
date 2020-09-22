@@ -8,5 +8,5 @@ class logConfig:
     LOG_TO_FILE = True
     LOG_PATH = '/home/benny/PycharmProjects/2_BennyJane/Learning_Py_World/log'
     # LOG_FORMAT = '%(asctime)s %(process)d %(levelname)s [%(pathname)s %(funcName)s] [%(lineno)d]:\n%(message)s'
-    LOG_FORMAT = '%(asctime)s %(process)d ' + Fore.GREEN + '%(levelname)s' + Fore.RESET + ' [%(pathname)s ' + Fore.GREEN + '%(funcName)s' + Fore.RESET + '] ' + Fore.YELLOW + '%(lineno)d' + Fore.RESET + ': ' + Fore.CYAN + '%(message)s' + Fore.RESET
+    LOG_FORMAT = '%(asctime)s %(process)d ' + Fore.BLUE + '%(levelname)s' + Fore.RESET + ' [%(pathname)s ' + Fore.BLUE + '%(funcName)s' + Fore.RESET + '] ' + Fore.BLUE + '%(lineno)d' + Fore.RESET + ': %(message)s'
     LOG_TO_CONSOLE = True
