@@ -133,4 +133,8 @@ dmypy.json
 *.log
 log/
 
+<<<<<<< HEAD
 .autoGit.sh
+=======
+autoGit.sh
+>>>>>>> 9d74aff9f5c2015328f27fbd559ce1110e805c4d
