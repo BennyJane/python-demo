@@ -5,8 +5,8 @@
 # @File : __init__.py.py
 # @Project : Learning_Py_World
 import abc
+import concurrent.futures
 import multiprocessing
-import time
 
 import math
 
@@ -40,14 +40,15 @@ class ProcessOnQueue(MultiProcessMeta):
         super(ProcessOnQueue, self).__init__()
         self.task_func = task
         self.jobs_data = params
-        self.concurrency = concurrency
+        self.concurrency = concurrency if concurrency else multiprocessing.cpu_count()
         self.timeout = timeout
 
     def run(self):
-        self.create_process()
+        self.create_process()  # 创建进程需要花费不少时间
         self.add_jobs(self.jobs_data)
         try:
             self._jobs.join()
+            pass
         except KeyboardInterrupt:
             print("canceling...")
 
@@ -56,7 +57,7 @@ class ProcessOnQueue(MultiProcessMeta):
             try:
                 data = self._jobs.get(timeout=self.timeout)
                 try:
-                    self.task_func(data)
+                    self.task_func(*data)
                 except Exception as e:
                     print(e)
             except Exception as e:
@@ -72,14 +73,64 @@ class ProcessOnQueue(MultiProcessMeta):
             process.start()
 
 
+class ProcessOnFutures(MultiProcessMeta):
+
+    def __init__(self, task, params, concurrency, timeout):
+        super().__init__()
+        self.task_func = task
+        self.jobs_data = params
+        self.concurrency = concurrency if concurrency else multiprocessing.cpu_count()
+        self.timeout = timeout
+        self.futures = set()
+
+    def run(self):
+        self.create_process()
+        self.run()
+
+    def worker(self):
+        pass
+
+    def create_process(self):
+        with concurrent.futures.ProcessPoolExecutor(max_workers=self.concurrency) as executor:
+            for item in self.get_jobs():
+                future = executor.submit(self.task_func, item)
+                self.futures.add(future)
+            self.wait_for()
+
+    def get_jobs(self):
+        for item in self.jobs_data:
+            yield item
+
+    def wait_for(self):
+        try:
+            # futures.as_completed() 调用任务，持续阻塞，返回完成的任务
+            for future in concurrent.futures.as_completed(self.futures):
+                err = future.exception()
+                if err is None:
+                    result = future.result()
+                else:
+                    print(str(err))
+        except KeyboardInterrupt:
+            for future in self.futures:
+                future.cancel()
+            pass
+
+
 def mathFunc(a):
     n = 0
     while n < 5:
-        res = math.pi * a
-        print(res)
-        time.sleep(1)
+        res = math.pi + a
+        # print(res)
+        # time.sleep(1)
         n += 1
+    # print(res)
 
 
 if __name__ == '__main__':
-    pro = ProcessOnQueue()
+    data = [(i,) for i in range(30)]
+    pro = ProcessOnQueue(mathFunc, data, concurrency=4)
+    pro.run()
+
+    # 直接执行几乎立即完成 ==》 多进程反而增加了时间
+    # for i in range(30):
+    #     mathFunc(i)
