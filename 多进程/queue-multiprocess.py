@@ -48,16 +48,16 @@ class ProcessOnQueue(MultiProcessMeta):
         self.add_jobs(self.jobs_data)
         try:
             self._jobs.join()
-            pass
         except KeyboardInterrupt:
             print("canceling...")
 
     def worker(self):
         while True:
             try:
-                data = self._jobs.get(timeout=self.timeout)
+                args = self._jobs.get(timeout=self.timeout)
                 try:
-                    self.task_func(*data)
+                    res = self.task_func(*args)
+                    self._results.put(res)
                 except Exception as e:
                     print(e)
             except Exception as e:
@@ -81,20 +81,17 @@ class ProcessOnFutures(MultiProcessMeta):
         self.jobs_data = params
         self.concurrency = concurrency if concurrency else multiprocessing.cpu_count()
         self.timeout = timeout
-        self.futures = set()
+        self._futures = set()
 
     def run(self):
         self.create_process()
         self.run()
 
-    def worker(self):
-        pass
-
     def create_process(self):
         with concurrent.futures.ProcessPoolExecutor(max_workers=self.concurrency) as executor:
             for item in self.get_jobs():
                 future = executor.submit(self.task_func, item)
-                self.futures.add(future)
+                self._futures.add(future)
             self.wait_for()
 
     def get_jobs(self):
@@ -104,16 +101,20 @@ class ProcessOnFutures(MultiProcessMeta):
     def wait_for(self):
         try:
             # futures.as_completed() 调用任务，持续阻塞，返回完成的任务
-            for future in concurrent.futures.as_completed(self.futures):
+            for future in concurrent.futures.as_completed(self._futures):
                 err = future.exception()
                 if err is None:
                     result = future.result()
                 else:
                     print(str(err))
         except KeyboardInterrupt:
-            for future in self.futures:
+            for future in self._futures:
                 future.cancel()
             pass
+
+    def worker(self):
+        """不需要具体实现"""
+        pass
 
 
 def mathFunc(a):
