@@ -14,7 +14,7 @@ class Base:
 
 
 b = Base()
-
+b.__setattr__()
 b.__setattr__("job", "actor")
 print(b.__dict__)
 
