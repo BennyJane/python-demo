@@ -4,7 +4,6 @@
 # @Email : 暂无
 # @File : __init__.py.py
 # @Project : Python-Exercise
-import os
 
 """
 函数:
@@ -35,7 +34,14 @@ class A(object):
         self.site = site
 
     def work(self):
+        self.work_name = "coder"
         return f"{self.name} is doing..."
+
+    @property
+    def pet(self):
+        # FIXME 该属性并没有绑定到实例上，也没有绑定到类上；
+        self.pet_name = "zsy"
+        return "a pig"
 
     def __getattribute__(self, item):
         # 错误写法, 循环调用,超出递归深度
@@ -46,9 +52,13 @@ class A(object):
     def __getattr__(self, item):
         return "error, not found"
 
-    def __get__(self, instance, owner):
-        """"""
-        return self
+    @staticmethod
+    def run():
+        print("running ...")
+
+    @classmethod
+    def eat(cls):
+        print("eating ...")
 
 
 a = A(site="shanghai")
@@ -77,16 +87,28 @@ print(a.__dir__)
 # 先调用一次__getattribute__获取__dir__内建函数属性,再调用两次__getattribute__ 属性获取结果
 # print(a.__dir__())
 print(dir(a))
-print(dir())
+# print(dir())  # 空值，等效于 globals()  locals()
 # print(dir(A))
-# print(A.__dir__())
-# setattr(a, "name", "a")
-# print(a.name)
-# print(a.__dict__)
-# print(a.__dir__())
 #
-# AWork = getattr(A, 'work')
-# print(getattr(A, 'work'))
+print(["实例与类属性的差值"], set(dir(a)).difference(set(dir(A))))
+
+print(a.__weakref__)
+# print(A.__dir__())
+setattr(a, "name", "a")  # 添加实例属性，不覆盖类同名属性，但类属性仍然存在
+a.__setattr__("name", "c")  # 等效 setattr()
+print(a.name)
+
+print(a.__dict__)  # 仅仅获取实例的属性，不包含方法在内, 也不包含@property修饰的类
+print(vars(a))  # vars() 实际调用__dict__; 只能处理有__dict__属性的类；仅仅获取实例的属性，包含其他动态绑定的属性，但不包含@property内绑定的属性
+
+print(a.__dir__())
+delattr(a, "name")
+a.__delattr__("site")
+print(a.name)
+print(a.__dir__())
+
+# fixme
+print(a.pet_name)
 
 """
 ==================================================================================
