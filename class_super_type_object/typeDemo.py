@@ -33,10 +33,15 @@ def with_metaclass(meta, *bases):
     # dummy metaclass for one level of class instantiation that replaces
     # itself with the actual metaclass.
     class metaclass(type):
-        def __new__(metacls, name, this_bases, d):
-            return meta(name, bases, d)
+        def __init__(cls, name, this_bases, d):
+            print("========================                metaclass __init__")
+            super().__init__(name, this_bases, d)
 
-    return type.__new__(metaclass, "temporary_class", (), {})
+        def __new__(metacls, name, this_bases, d):
+            print("========================                metaclass __new__")
+            return meta(name, bases, d)  # 调用了 meta的 __init__ 方法
+
+    return type.__new__(metaclass, "temporary_class", (), {})  # 只是调用 __new__ 方法
 
 
 class A:
@@ -47,11 +52,12 @@ class A:
 class B(type):
     """元类添加的属性,子类无法继承"""
 
+    def __init__(cls, name, bases, d):
+        print("==================  B  __init__ ")
+        super().__init__(name, bases, d)
 
-# print(with_metaclass(B))
 
-
-class C(with_metaclass(B, A)):
+class C(with_metaclass(B, A)):  # C 继承metaclass, 这儿, 元类metaclass被实例化,调用了 __new__方法
     name = "B"
 
 
@@ -71,6 +77,22 @@ print(c.__class__.__class__)
 print(c.__class__.__class__.__class__)
 # 实例继承关系: c C B type
 print(type(c), type(type(c)), type(type(type(c))))
+
+# print(type(c)())
+"""
+===========================================================================================================
+with_metaclass 的作用
+===========================================================================================================
+"""
+print("\n========================= \n"
+      "with_metaclass 作用探究\n"
+      "========================= \n")
+d = with_metaclass(B, A)
+print(dir(d))
+print(d.mro())
+print(d.__class__, d.__class__.__class__)
+print(type(d), type(type(d)))
+print(with_metaclass(B))
 
 
 class D:
