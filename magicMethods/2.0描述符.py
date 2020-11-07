@@ -11,7 +11,8 @@ class A(object):
         self._name = name
 
     @property
-    def name(self):
+    def name(self, arg=10):
+        print(arg)
         print("property get ...")
         return self._name
 
@@ -23,11 +24,14 @@ class A(object):
 
 def base1():
     a = A("A")
-    a.__dict__['name'] = "C"
+    a.__dict__['name'] = "C0000"
     # a.name = "C"
     # setattr(a, "name", "C")
-    # print(dir(a))
+    A.__dict__['name'] = "benny"
+    print(vars(a))
+    print(vars(A))
     print(a.name)
+    print(a._name)
     # a.name = "B"
     # print(a.name)
 
