@@ -127,6 +127,7 @@ def corouDecorator(f):
 
     return wrapper
 
+Ellipsis
 
 if __name__ == '__main__':
     # Test1()
