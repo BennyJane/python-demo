@@ -118,12 +118,42 @@ def Test4():
     # print(next(iterator))
 
 
+def Test5():
+    def add_A(seq):
+        print("A-before")
+        for item in seq:
+            print("A")
+            yield item + '-A'
+
+    def add_B(seq):
+        print("B-before")
+        for item in seq:
+            print("B")
+            yield item + '-B'
+
+    def add_C(seq):
+        print("C-before")
+        for item in seq:
+            print("C")
+            yield item + '-C'
+
+    seq = ['apple', 'banana', 'orange']
+
+    stacked_generator = add_C(add_B(add_A(seq)))
+
+    for item in stacked_generator:
+        print(item)
+
+    """
+    apple-A-B-C
+    banana-A-B-C
+    orange-A-B-C
+    """
+
+
 if __name__ == '__main__':
     # Test1()
     # Test2()
     # Test3()
     # Test4()
-    s = 0
-    sum_n = (s + i for i in range(100))
-    # print(sum_n)
-    print(sum(sum_n))
+    Test5()

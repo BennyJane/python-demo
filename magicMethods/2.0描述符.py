@@ -10,6 +10,7 @@ import math
 class A(object):
 
     def __init__(self, name):
+        # TODO 这儿使用 self._name  self.name 的逻辑，效果完全不一样
         self._name = name
 
     @property
@@ -91,7 +92,7 @@ def base3():
 
 
 if __name__ == '__main__':
-    # base1()
+    base1()
     # base2()
-    base3()
+    # base3()
     pass
