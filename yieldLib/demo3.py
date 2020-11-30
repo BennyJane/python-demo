@@ -1,6 +1,6 @@
 from collections import namedtuple
 from inspect import getgeneratorstate
-
+import time
 Result = namedtuple("Result", "count average")
 
 
@@ -121,18 +121,21 @@ def Test4():
 def Test5():
     def add_A(seq):
         print("A-before")
+        time.sleep(1)
         for item in seq:
             print("A")
             yield item + '-A'
 
     def add_B(seq):
         print("B-before")
+        time.sleep(1)
         for item in seq:
             print("B")
             yield item + '-B'
 
     def add_C(seq):
         print("C-before")
+        time.sleep(1)
         for item in seq:
             print("C")
             yield item + '-C'
@@ -141,8 +144,10 @@ def Test5():
 
     stacked_generator = add_C(add_B(add_A(seq)))
 
-    for item in stacked_generator:
-        print(item)
+    next(stacked_generator)
+
+    # for item in stacked_generator:
+    #     print(item)
 
     """
     apple-A-B-C
