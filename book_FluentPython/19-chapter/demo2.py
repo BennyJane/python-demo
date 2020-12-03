@@ -46,8 +46,17 @@ class LineItem2:
         del self.__weight
 
 
+class NonOverriding:  # <4>
+    """a.k.a. non-data or shadowable descriptor"""
+
+    def __get__(self, instance, owner):
+        print("non over...")
+
+
 class Base:
     data = "the class data attr"  # 类属性
+
+    non_over = NonOverriding()
 
     def __init__(self, name="name"):
         self.name = name
@@ -79,15 +88,7 @@ class Base:
         print("class method c")
 
 
-if __name__ == '__main__':
-    line_item = LineItem('abc', 50, 150)
-    # print(line_item.weight)
-
-    line_item = LineItem2('abc', 50, 150)
-    # print(line_item.weight)
-    # line_item.weight = 200
-    # print(line_item.weight)
-
+def Test2():
     b = Base()
     print(vars(b))
     print(vars(Base))
@@ -102,3 +103,25 @@ if __name__ == '__main__':
     Base.a()
     Base.c()
     # Base.d()
+
+
+def Test3():
+    b = Base()
+    print(b.prop)
+
+    b.non_over
+    b.non_over = 10
+    print(b.non_over)
+    Base.non_over
+
+
+if __name__ == '__main__':
+    line_item = LineItem('abc', 50, 150)
+    # print(line_item.weight)
+
+    line_item = LineItem2('abc', 50, 150)
+    # print(line_item.weight)
+    # line_item.weight = 200
+    # print(line_item.weight)
+
+    Test3()
