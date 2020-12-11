@@ -3,8 +3,7 @@
 # PROJECT    : Python-Exercise
 # Time       ：2020/12/8 23:02
 # Warning    ：The Hard Way Is Easier
-
-global count
+import random
 
 
 def task1(x, y):
@@ -14,6 +13,6 @@ def task1(x, y):
 
 
 def write_file():
-    count += 1
-    with open('./record.txt', 'a') as f:
-        f.write(f"count: {count}")
+    number = random.randint(0, 100)
+    with open('record.txt', 'a') as f:
+        f.write(f"random num: {number}")
