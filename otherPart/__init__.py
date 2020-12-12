@@ -10,3 +10,5 @@ init_name = 'benny'
 
 
 _private_name = 'a private name'
+
+__name = "private name"
