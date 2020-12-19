@@ -46,6 +46,7 @@ class A(object):
     def __getattribute__(self, item):
         # 错误写法, 循环调用,超出递归深度
         # return self.__getattribute__(item)
+        # return self.__dict__[item]
         print("====    __getattribute__  is called     =====")
         return object.__getattribute__(self, item)
 
