@@ -46,9 +46,9 @@ print(c)
 d.update()
 print(d)
 
-from otherPart import *
-from otherPart import _private_name
-from otherPart import __name
+from test import *
+from test import _private_name
+from test import __name
 
 print(_private_name)
 
