@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-# @Time : 2020/10/31
-# @Author : Benny Jane
-# @Email : 暂无
-# @File : demo-0.py
-# @Project : Learning_Py_World
+# !/usr/bin/env python
+# -*-coding:utf-8 -*-
+# PROJECT    : Python-Exercise
+# Time       ：2020/12/24 23:55
+# Warning    ：The Hard Way Is Easier
+
 
 import signal, time
-
 
 signal.alarm(3)
 

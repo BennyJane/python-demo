@@ -13,6 +13,7 @@ python内容整理
 - _signal
 - _subprocess
 - book_FluentPython 《流畅的python》书中代码
+- bullitin_funcs 内建函数
 - class_super_type_object 类、超类、元类
     - abstract_class.py 抽象类与抽象方法; obj.__subclasses__() __subclasshook__
     - abstract_class_02.py  抽象属性
@@ -20,10 +21,12 @@ python内容整理
 - crontab_task 定时任务
 - decorator 装饰器
 - errors    异常处理
+- list_dict_set_tuple 列表、字典、集合、元组
 - magic_methods 魔法方法
 - singleton 单例模式总结(1)
 - singleton_adv 单例模式总结(2)
 - source_code  从源码中总结的内容
+- standard_pkg 标准库
 - string_code  PY字符串
 - test 测试代码
 - uuid_snowflake uuid与雪花算法

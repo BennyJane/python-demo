@@ -91,6 +91,7 @@ def Singleton(cls):
 # @singleton
 @Singleton
 class Foo:
+
     def __new__(cls, *args, **kwargs):
         cls.x = 10
         return object.__new__(cls)

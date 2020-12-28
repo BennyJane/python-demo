@@ -4,7 +4,7 @@
 # Time       ：2020/12/22 9:56
 # Warning    ：The Hard Way Is Easier
 
-
+import typing
 name = "benny jane"
 
 if __name__ == '__main__':
