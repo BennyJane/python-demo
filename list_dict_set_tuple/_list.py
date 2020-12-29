@@ -33,7 +33,12 @@ print(res)
 res = [i for temp in t for i in temp]
 print(res)
 
+print(l.pop(0))
+print(l.count(3))
+print(l.remove(2))
+l.reverse()
+print(l)
 if __name__ == '__main__':
-    Test1()
+    # Test1()
     # Test2()
     pass

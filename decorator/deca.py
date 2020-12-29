@@ -13,7 +13,6 @@ def my_logger(count):
                 logger.info(f"{result},{count}")
             except Exception:
                 logger.exception(traceback.format_exc())
-
         return step2
 
     return step1
