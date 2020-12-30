@@ -7,7 +7,7 @@
 import time
 import logging
 
-logger = logging.getLogger("snowflake.demo")
+logger = logging.getLogger("snowflake.example")
 
 
 class ProduceId(object):

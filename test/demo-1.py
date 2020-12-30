@@ -2,7 +2,7 @@
 # @Time : 2020/11/1
 # @Author : Benny Jane
 # @Email : 暂无
-# @File : demo1.py
+# @File : example.py
 # @Project : Learning_Py_World
 import time
 import logging

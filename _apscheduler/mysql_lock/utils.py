@@ -4,8 +4,7 @@
 # Time       ：2020/12/11 22:17
 # Warning    ：The Hard Way Is Easier
 import functools
-import pymysql
-from sqlalchemy import MetaData, Table, Column, create_engine, BigInteger, String, INTEGER
+from sqlalchemy import MetaData, Table, Column, create_engine, String, INTEGER
 from sqlalchemy import insert, delete
 from sqlalchemy.exc import InternalError
 
@@ -36,7 +35,6 @@ def add_lock(lock_value):
     try:
         engine.connect().execute(ins)
     except (InternalError, Exception) as e:
-        # print(e)
         # 当前插入锁值已存在，且表示尚未解锁，其他操作都会触发该异常，返回False
         return False
     else:

@@ -6,7 +6,7 @@ import sys
 """
 代码来源： spinner_thread.py 
 TIP:
-    - 必须使用终端运行： python demo1.py,才能看到动画，因为其中调用的 sys.stdout指的是系统终端输出
+    - 必须使用终端运行： python example.py,才能看到动画，因为其中调用的 sys.stdout指的是系统终端输出
 
 """
 

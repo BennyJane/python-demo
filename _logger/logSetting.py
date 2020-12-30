@@ -37,7 +37,7 @@ def setLogger(name=None):
         # 如果路径不存在, 则创建日志文件夹
         nowTime = time.strftime("%Y-%m-%d")
         LOG_PATH = logConfig.LOG_PATH + '/' + nowTime + '.log'
-        # LOG_PATH = logConfig.LOG_PATH + '/demo.log'
+        # LOG_PATH = logConfig.LOG_PATH + '/example.log'
         log_dir = os.path.dirname(LOG_PATH)
         if not os.path.exists(log_dir): os.makedirs(log_dir)  # 需要创建路径与相应的文件
 
