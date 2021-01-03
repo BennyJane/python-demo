@@ -12,6 +12,7 @@ os: 对操作系统的高度封装
 
 
 def os_funcs():
+    os.environ  # 获取当前所有环境变量
     os.getenv("key", "default")
     pwd = os.getcwd()  # 获取当前运行路径
     print("pwd", pwd)
@@ -35,7 +36,7 @@ def sys_funcs():
     sys.argv()  # 获取命令行参数列表
     sys.exit()  # 推出程序，并返回指定的整数
     sys.maxunicode  # 最大的unicode值
-    sys.modules  # 系统导入的模块名称
+    sys.modules  # 系统导入的模块名称, Flask中从import_name获取root_path有用到
     sys.path  # PY搜索模块时的路径
     sys.stdout  # 标准输出
     sys.stdin  # 标准输入
