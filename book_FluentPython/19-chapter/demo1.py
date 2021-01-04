@@ -8,7 +8,7 @@ from collections import abc
 
 """
 用类来解析一个json格式的数据
-代码来源： example.py 
+代码来源： asyncio_example.py 
 
 TIP:
     - 改进demo1.py: 使用Event代替自定义的信号
