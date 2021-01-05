@@ -14,7 +14,7 @@ class FirstMixins(object):
     def get_header(self):
         print("run FirstMixins.get_header")
         ctx = super(FirstMixins, self).get_header()
-        ctx.append("data1")
+        ctx.append("data1")  # 该方法第一个被调用，但最后一个被执行完毕
         return ctx
 
 
@@ -24,7 +24,8 @@ class SecondMixins(object):
     def get_header(self):
         print("run SecondMixins.get_header")
         ctx = super(SecondMixins, self).get_header()
-        ctx.insert(0, "data2")
+        ctx.append("data2")
+        # ctx.insert(0, "data2")
         return ctx
 
 
