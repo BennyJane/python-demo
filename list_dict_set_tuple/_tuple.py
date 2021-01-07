@@ -20,4 +20,17 @@ try:
 except ValueError:
     pass
 
+# __getitem__
+print("通过索引获取元素", t1[0], t1[2-5])
+try:
+    print("通过索引获取元素", t1[10])
+except IndexError:
+    print("索引超出")
 
+for i in t1:
+    print("__iter__: 迭代", i)
+
+print("复制N份", t1 * 2)
+print("转化为list: ", list(t1))
+print("反向排列", t1[::-1])
+print("start:end:step", t1[::2])
