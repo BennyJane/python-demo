@@ -1,13 +1,8 @@
 # !/usr/bin/env python
 # -*-coding:utf-8 -*-
 # Warning    ：The Hard Way Is Easier
-
-class BaseViz(object):
-    def __init__(self):
-        self.name = "benny"
-
-    def site(self, site="wuhan"):
-        print("site: {}".format(site))
+from class_super_type_object.child_class_base import BaseViz
+from class_super_type_object.child_class_base import get_subclasses
 
 
 class FirstChild(BaseViz):
@@ -28,20 +23,12 @@ class ThreeChild(BaseViz):
         print("site: {}".format(site))
 
 
-def get_subclasses(cls):
-    return set(cls.__subclasses__()).union(
-        [sc for child in cls.__subclasses__() for sc in child.__subclasses__()]
-    )
-
-
-VIZ_TYPE_DENYLIST = ['FirstChild', ]
-
-all_child_types = {
+first_file_children = {
     c.__name__: c
-    for c in get_subclasses(BaseViz) if c.__name__ not in VIZ_TYPE_DENYLIST
+    for c in get_subclasses(BaseViz)
 }
 
 # 统计当前模块内BaseViz类的所有子类；并排除
 
 if __name__ == '__main__':
-    print(all_child_types)
+    print(first_file_children)
