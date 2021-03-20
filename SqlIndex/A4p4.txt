@@ -1,0 +1,63 @@
+import time
+import random
+import sqlite3
+from settings import DB_NAMES
+from utils import load_country_data
+from utils import get_average
+
+# PART4 查询随机选择的国家中最大price的值
+EXECUTE_NUMS = 100
+SELECT_SQL_Q1 = "select count(*) from Parts m where not exists(select partNumber from Parts n where m.partNumber = n.needsPart);"
+SELECT_SQL_Q2 = "select count(*) from Parts m where m.partNumber not in(select partNumber from Parts n where m.partNumber = n.needsPart);"
+CREATE_INDEX = "CREATE INDEX idxNeedsPart ON Parts ( needsPart );"
+DROP_INDEX = "DROP INDEX idxNeedsPart;"
+
+
+
+def execute_query():
+    origin_data = load_country_data()
+    random.shuffle(origin_data)
+    for db_name in DB_NAMES:
+        q1_time_sum = 0
+        q2_time_sum = 0
+        conn = sqlite3.connect(db_name)
+        print(f"Opening {db_name}")
+        for _ in range(EXECUTE_NUMS):
+            time_point1 = time.time()
+            conn.execute(SELECT_SQL_Q1)
+            time_point2 = time.time()
+            conn.execute(SELECT_SQL_Q2)
+            time_point3 = time.time()
+            q1_time_sum += (time_point2 - time_point1)
+            q2_time_sum += (time_point3 - time_point2)
+        print(f"Average query time for Query Q1: {get_average(q1_time_sum)} ms")
+        print(f"Average query time for Query Q2: {get_average(q2_time_sum)} ms")
+        conn.close()
+        print(f"Closing {db_name}")
+
+
+def main():
+    print("Executing Part 4\n")
+
+    print("Executing Task J1")
+    execute_query()
+
+    print("\nCreating Index")
+    for db_name in DB_NAMES:
+        conn = sqlite3.connect(db_name)
+        conn.execute(CREATE_INDEX)
+        conn.close()
+
+    print("\nExecuting Task J2")
+    execute_query()
+
+    # 先删除现有的索引
+    print("\nDrop Index")
+    for db_name in DB_NAMES:
+        conn = sqlite3.connect(db_name)
+        conn.execute(DROP_INDEX)
+        conn.close()
+
+
+if __name__ == '__main__':
+    main()
