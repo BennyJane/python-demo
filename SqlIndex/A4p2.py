@@ -4,6 +4,7 @@ import sqlite3
 from settings import DB_NAMES
 from utils import load_country_data
 from utils import get_average
+from utils import change_index
 
 EXECUTE_NUMS = 100
 SELECT_SQL = "SELECT AVG(partPrice) FROM Parts WHERE madeIn  = '{}';"
@@ -41,20 +42,13 @@ def main():
     execute_query()
 
     print("\nCreating Index")
-    for db_name in DB_NAMES:
-        conn = sqlite3.connect(db_name)
-        conn.execute(CREATE_INDEX)
-        conn.close()
+    change_index(CREATE_INDEX)
 
     print("\nExecuting Task B")
     execute_query()
 
-    # 先删除现有的索引
     print("\nDrop Index")
-    for db_name in DB_NAMES:
-        conn = sqlite3.connect(db_name)
-        conn.execute(DROP_INDEX)
-        conn.close()
+    change_index(DROP_INDEX)
 
 
 if __name__ == '__main__':

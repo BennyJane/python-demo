@@ -10,6 +10,7 @@ from settings import INSERT_SQL
 from utils import load_upc_data
 from utils import load_country_data
 
+
 # 生成数据库
 def create_db(name: str, num: int):
     os.remove(name)  # 每次删除数据库，并重新创建
@@ -28,10 +29,10 @@ def create_db(name: str, num: int):
     random.shuffle(upc_data_copy)
     # 根据num值，确定插入数据表的数据
     for _ in range(num):
-        partNumber = upc_data.pop(0)    # 从UPC数据获取数值
+        partNumber = upc_data.pop(0)  # 从UPC数据获取数值
         partPrice = random.randint(1, 100)  # 随机生成1-100的数据
         needsPart = upc_data_copy.pop(0)
-        madeInTEXT = random.choice(country_data_list)["Code"]   # 获取地区缩写字母
+        madeInTEXT = random.choice(country_data_list)["Code"]  # 获取地区缩写字母
         # 插入数据，并捕获主键已存在的异常
         while True:
             try:
@@ -44,7 +45,7 @@ def create_db(name: str, num: int):
                 break
     print("insert done!")
     conn.commit()  # 提交，真正插入数据库
-    conn.close()    # 关闭数据库连接
+    conn.close()  # 关闭数据库连接
     print("commit done!")
 
 

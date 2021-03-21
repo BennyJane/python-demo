@@ -11,7 +11,7 @@ from utils import change_index
 # PART4 查询随机选择的国家中最大price的值
 EXECUTE_NUMS = 100
 SELECT_SQL_Q1 = "select count(m.partNumber) from Parts m where not exists(select 1 from Parts n where m.partNumber = n.needsPart);"
-SELECT_SQL_Q2 = "select count(m.partNumber) from Parts m where m.partNumber not in(select partNumber from Parts n where m.partNumber = n.needsPart);"
+SELECT_SQL_Q2 = "select count(partNumber) from Parts where partNumber not in(select needsPart from Parts);"
 # 创建单索引：needsPart
 CREATE_INDEX = "CREATE INDEX idxNeedsPart ON Parts ( needsPart );"
 DROP_INDEX = "DROP INDEX idxNeedsPart;"
@@ -30,7 +30,7 @@ def execute_sql(conn):
     time_point3 = time.time()
     q1_time_sum = (time_point2 - time_point1)
     q2_time_sum = (time_point3 - time_point2)
-    print("Q1: ", q1_time_sum, "Q2: ", q2_time_sum)
+    # print("Q1: ", q1_time_sum, "Q2: ", q2_time_sum)
     print(f"Average query time for Query Q1: {get_average(q1_time_sum)} ms")
     print(f"Average query time for Query Q2: {get_average(q2_time_sum)} ms")
 

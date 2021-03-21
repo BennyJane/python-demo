@@ -9,7 +9,8 @@ from utils import change_index
 # PART3 查询随机选择的国家中最大price的值
 EXECUTE_NUMS = 100
 SELECT_SQL = "SELECT * FROM Parts WHERE madeIn  = '{}' order by partPrice desc limit 1;"
-# SELECT_SQL = "SELECT MAX(partPrice) FROM Parts WHERE madeIn  = '{}';"
+# SELECT_SQL = "SELECT * FROM Parts WHERE partPrice = (SELECT MAX(partPrice) FROM Parts WHERE madeIn  = '{}');"
+# SELECT_SQL = "SELECT * FROM Parts WHERE partPrice = (SELECT * FROM Parts WHERE madeIn  = '{}' order by partPrice desc limit 1);"
 # 创建索引: idxMadeIn
 CREATE_INDEX = "CREATE INDEX idxMadeIn ON Parts ( MadeIn );"
 DROP_INDEX = "DROP INDEX idxMadeIn;"

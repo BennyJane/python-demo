@@ -21,21 +21,22 @@ def execute_query():
     upc_data = load_upc_data()  # 加载UPC数据
     random.shuffle(upc_data)  # 打乱原始数据
     for db_name in DB_NAMES:  # 遍历5个数据库
-        q1_time_sum = 0  # 记录查询1的执行总时间
-        q2_time_sum = 0  # 记录查询2的执行总时间
         print(f"Opening {db_name}")
         conn = sqlite3.connect(db_name)
+
+        time_point1 = time.time()   # 记录时间节点1
         for _ in range(EXECUTE_NUMS):
-            # 每次执行前，都生成新的随机值
+            # 每次执行前，获取新的值
             select_q1 = SELECT_SQL.format("partNumber", int(upc_data.pop()))
-            select_q2 = SELECT_SQL.format("needsPart", int(upc_data.pop()))
-            time_point1 = time.time()
             conn.execute(select_q1)  # 执行查询1
-            time_point2 = time.time()
+        time_point2 = time.time()   # 记录时间节点2
+        for _ in range(EXECUTE_NUMS):
+            select_q2 = SELECT_SQL.format("needsPart", int(upc_data.pop()))
             conn.execute(select_q2)  # 执行查询2
-            time_point3 = time.time()
-            q1_time_sum += (time_point2 - time_point1)  # 累计查询1的时间
-            q2_time_sum += (time_point3 - time_point2)  # 累计查询2的时间
+        time_point3 = time.time()   # 记录时间节点3
+
+        q1_time_sum = (time_point2 - time_point1)  # 累计查询1的时间
+        q2_time_sum = (time_point3 - time_point2)  # 累计查询2的时间
         print(f"Average query time for Query Q1: {get_average(q1_time_sum)} ms")
         print(f"Average query time for Query Q2: {get_average(q2_time_sum)} ms")
         conn.close()  # 关闭数据库连接
